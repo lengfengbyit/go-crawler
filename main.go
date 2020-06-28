@@ -17,7 +17,7 @@ func main() {
 
 	e := engine.CoroutinesEngine{
 		Scheduler: &scheduler.SimpleScheduler{},
-		WorkerNum: 100,
+		WorkerNum: 50,
 		Domain: domain,
 	}
 

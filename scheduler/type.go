@@ -12,3 +12,8 @@ type ParseResult struct {
 	Items    []interface{}
 }
 
+func NilParseResult(items []interface{}) ParseResult  {
+	return ParseResult{
+		Items: items,
+	}
+}

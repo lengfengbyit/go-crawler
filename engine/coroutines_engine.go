@@ -35,7 +35,7 @@ func (engine *CoroutinesEngine) Run(seeks ...scheduler.Request) {
 		itemCount++
 		result := <-outChan
 		for _, item := range result.Items {
-			log.Printf("%d, %s\n",itemCount, item)
+			log.Printf("count: %d, item: %s\n",itemCount, item)
 		}
 
 		for _, req := range result.Requests {
@@ -64,15 +64,12 @@ func (engine *CoroutinesEngine) CreateWorker(inChan chan scheduler.Request, outC
 
 func (engine *CoroutinesEngine) Worker(r scheduler.Request) (result scheduler.ParseResult, err error) {
 
-	log.Printf("Fetching Url: %s: %d\n", r.Url)
+	log.Printf("Fetching Url: %s\n", r.Url)
 	body, err := fetcher.Fetch(r.Url)
 	if err != nil {
 		log.Printf("Fetch Error: %v", err)
 		return scheduler.ParseResult{}, err
 	}
 
-	if r.ParseFunc == nil {
-		return scheduler.ParseResult{Items: []interface{}{body}}, nil
-	}
 	return r.ParseFunc(body), nil
 }
