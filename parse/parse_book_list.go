@@ -1,24 +1,24 @@
 package parse
 
 import (
-	"project/crawl/engine"
+	"project/crawl/scheduler"
 	"regexp"
 )
 
 const bookListRegexpStr = `<a href="([^"]+)" title="([^"]+)"`
 
 // 获取书列表
-func GetBookList(content []byte) engine.ParseResult {
+func GetBookList(content []byte) scheduler.ParseResult {
 
 	re := regexp.MustCompile(bookListRegexpStr)
 	match := re.FindAllSubmatch(content, -1)
 
-	results := engine.ParseResult{}
+	results := scheduler.ParseResult{}
 	for _, m := range match {
 		results.Items = append(results.Items, m[2])
-		results.Requests = append(results.Requests, engine.Request{
+		results.Requests = append(results.Requests, scheduler.Request{
 			Url:       string(m[1]),
-			ParseFunc: nil,
+			ParseFunc: GetBookDetail,
 		})
 	}
 	return results

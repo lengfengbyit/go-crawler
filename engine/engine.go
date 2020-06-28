@@ -3,12 +3,13 @@ package engine
 import (
 	"log"
 	"project/crawl/fetcher"
+	"project/crawl/scheduler"
 )
 
 // 运行爬虫程序
-func Run(domain string, seeks ...Request)  {
+func Run(domain string, seeks ...scheduler.Request)  {
 
-	var requests []Request
+	var requests []scheduler.Request
 	for _, e := range seeks {
 		requests = append(requests, e)
 	}
