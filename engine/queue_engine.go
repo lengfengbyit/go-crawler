@@ -51,9 +51,8 @@ func (engine *QueueEngine) Run(seeks ...scheduler.Request) {
 func (engine *QueueEngine) CreateWorker(outChan chan scheduler.ParseResult) {
 
 	go func() {
-
-		// 每个worker创建一个channel,
-		inChan := make(chan scheduler.Request)
+		// 从调度器中获取channel
+		inChan := engine.Scheduler.GetWorkerChan()
 		for {
 			// 通知调度器，当前worker空闲，可以分派任务
 			engine.Scheduler.WorkerReady(inChan)

@@ -6,6 +6,11 @@ type QueueScheduler struct {
 	WorkerChan  chan chan Request // Request chan 类型的 chan
 }
 
+// 每个worker都有一个channel队列
+func (q *QueueScheduler) GetWorkerChan() chan Request {
+	return make(chan Request)
+}
+
 func (q *QueueScheduler) Submit(request Request) {
 	q.RequestChan <- request
 }
