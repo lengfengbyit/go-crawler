@@ -15,9 +15,15 @@ func main() {
 	}
 	//engine.Run(domain, req)
 
-	e := engine.CoroutinesEngine{
-		Scheduler: &scheduler.SimpleScheduler{},
-		WorkerNum: 50,
+	//e := engine.CoroutinesEngine{
+	//	Scheduler: &scheduler.SimpleScheduler{},
+	//	WorkerNum: 10,
+	//	Domain: domain,
+	//}
+
+	e := engine.QueueEngine{
+		Scheduler: &scheduler.QueueScheduler{},
+		WorkerNum: 10,
 		Domain: domain,
 	}
 

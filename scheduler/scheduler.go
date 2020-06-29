@@ -4,11 +4,21 @@ package scheduler
 type Scheduler interface {
 	Submit(Request)
 	ConfigureWorkChan(chan Request)
+	WorkerReady(chan Request)
+	Run()
 }
 
 // 简单的调度器
 type SimpleScheduler struct {
 	workerChan chan Request
+}
+
+func (s *SimpleScheduler) WorkerReady(requests chan Request) {
+	panic("implement me")
+}
+
+func (s *SimpleScheduler) Run() {
+	panic("implement me")
 }
 
 // 提交请求任务到调度器

@@ -11,11 +11,18 @@ import (
 	"log"
 	"net/http"
 	url2 "net/url"
+	"time"
 )
 
+
+// 每隔10毫秒产生一个值
+var limitRate = time.Tick(time.Millisecond * 10)
+
 func Fetch(url string) ([]byte, error) {
+	// 每隔10毫秒执行一次
+	//<-limitRate
 	urli := url2.URL{}
-	urlProxy, _ := urli.Parse("http://xxx/")
+	urlProxy, _ := urli.Parse("xxx")
 	client := &http.Client{
 		Transport: &http.Transport{
 			Proxy: http.ProxyURL(urlProxy),
@@ -23,6 +30,7 @@ func Fetch(url string) ([]byte, error) {
 			MaxIdleConns: 20,
 		},
 	}
+	//client := &http.Client{}
 
 	request, err := http.NewRequest("GET", url, nil)
 	request.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36")
@@ -66,7 +74,7 @@ func GetEncoding(r *bufio.Reader) encoding.Encoding {
 }
 
 
-// 在解决问题之前需要了解关于go是如何实现connection的一些背景小知识：
+//在解决问题之前需要了解关于go是如何实现connection的一些背景小知识：
 //有两个协程，一个用于读，一个用于写（就是readLoop和writeLoop）。
 //在大多数情况下，readLoop会检测socket是否关闭，并适时关闭connection。
 //如果一个新请求在readLoop检测到关闭之前就到来了，那么就会产生EOF错误并中断执行，而不是去关闭前一个请求。

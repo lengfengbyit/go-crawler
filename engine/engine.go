@@ -6,7 +6,7 @@ import (
 	"project/crawl/scheduler"
 )
 
-// 运行爬虫程序
+// 同步版爬虫
 func Run(domain string, seeks ...scheduler.Request)  {
 
 	var requests []scheduler.Request

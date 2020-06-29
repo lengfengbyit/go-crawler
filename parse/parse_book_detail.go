@@ -40,11 +40,20 @@ func GetBookDetail(content []byte) scheduler.ParseResult {
 	}
 
 	author := ""
-	if authorNode != nil{
+	if authorNode != nil {
 		author = util.TrimSpaceAndLinefeed(htmlquery.InnerText(authorNode))
 	}
 
+	metaNode := htmlquery.FindOne(html, "/html/head/meta[4]")
+	metaContent := htmlquery.SelectAttr(metaNode, "content")
+	ls := strings.Split(metaContent, "/")
+	id, err := strconv.Atoi(ls[len(ls)-2])
+	if err != nil {
+		id = 0
+	}
+
 	book := model.Book{
+		Id:            uint32(id),
 		Name:          htmlquery.InnerText(nameNode),
 		Author:        author,
 		CoverUrl:      htmlquery.SelectAttr(coverNode, "src"),
