@@ -11,18 +11,19 @@ import (
 	"log"
 	"net/http"
 	url2 "net/url"
+	"os"
 	"time"
 )
 
 
 // 每隔10毫秒产生一个值
-var limitRate = time.Tick(time.Millisecond * 10)
+var limitRate = time.Tick(time.Millisecond * 100)
 
 func Fetch(url string) ([]byte, error) {
-	// 每隔10毫秒执行一次
-	//<-limitRate
+	// 每隔100毫秒执行一次, 访问太频繁，会被降级
+	<-limitRate
 	urli := url2.URL{}
-	urlProxy, _ := urli.Parse("xxx")
+	urlProxy, _ := urli.Parse(os.Getenv("PROXY_URL"))
 	client := &http.Client{
 		Transport: &http.Transport{
 			Proxy: http.ProxyURL(urlProxy),

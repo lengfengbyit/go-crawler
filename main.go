@@ -1,9 +1,11 @@
 package main
 
 import (
+	"os"
 	"project/crawl/engine"
 	"project/crawl/parse"
 	"project/crawl/scheduler"
+	"strconv"
 )
 
 // go 爬虫项目
@@ -21,9 +23,14 @@ func main() {
 	//	Domain: domain,
 	//}
 
+	workerNum, err :=  strconv.Atoi(os.Getenv("WORKER_NUM"))
+	if err != nil {
+		panic(err)
+	}
+
 	e := engine.QueueEngine{
 		Scheduler: &scheduler.QueueScheduler{},
-		WorkerNum: 10,
+		WorkerNum: workerNum,
 		Domain: domain,
 	}
 
