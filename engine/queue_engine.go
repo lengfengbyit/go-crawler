@@ -11,7 +11,8 @@ import (
 type QueueEngine struct {
 	WorkerNum int                 // 协程数
 	Scheduler scheduler.Scheduler // 调度器
-	Domain string // 域名配置
+	Domain    string              // 域名配置
+	ItemChan  chan interface{}    // 需要保存的信息
 }
 
 func (engine *QueueEngine) Run(seeks ...scheduler.Request) {
@@ -35,7 +36,8 @@ func (engine *QueueEngine) Run(seeks ...scheduler.Request) {
 		itemCount++
 		result := <-outChan
 		for _, item := range result.Items {
-			log.Printf("count: %d, item: %s\n",itemCount, item)
+			// 保存信息, 参数传递是为了防止变量引用传递的问题
+			go func(tmp interface{}) {engine.ItemChan <- tmp}(item)
 		}
 
 		for _, req := range result.Requests {

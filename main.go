@@ -4,6 +4,7 @@ import (
 	"os"
 	"project/crawl/engine"
 	"project/crawl/parse"
+	"project/crawl/persist"
 	"project/crawl/scheduler"
 	"strconv"
 )
@@ -32,6 +33,7 @@ func main() {
 		Scheduler: &scheduler.QueueScheduler{},
 		WorkerNum: workerNum,
 		Domain: domain,
+		ItemChan: persist.ItemSave(), // 爬取到的信息，持久化
 	}
 
 	e.Run(req)
