@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 	"project/crawl/engine"
-	"project/crawl/parse"
-	"project/crawl/persist"
+	"project/crawl/parse/douban/book"
+	book2 "project/crawl/persist/douban/book"
 	"project/crawl/scheduler"
 	"strconv"
 )
@@ -13,16 +13,9 @@ import (
 const domain = "https://book.douban.com"
 func main() {
 	req := scheduler.Request{
-		Url: domain,
-		ParseFunc: parse.GetTags,
+		Url:       domain,
+		ParseFunc: book.GetTags,
 	}
-	//engine.Run(domain, req)
-
-	//e := engine.CoroutinesEngine{
-	//	Scheduler: &scheduler.SimpleScheduler{},
-	//	WorkerNum: 10,
-	//	Domain: domain,
-	//}
 
 	workerNum, err :=  strconv.Atoi(os.Getenv("WORKER_NUM"))
 	if err != nil {
@@ -32,8 +25,8 @@ func main() {
 	e := engine.QueueEngine{
 		Scheduler: &scheduler.QueueScheduler{},
 		WorkerNum: workerNum,
-		Domain: domain,
-		ItemChan: persist.ItemSave(), // 爬取到的信息，持久化
+		Domain:    domain,
+		ItemChan:  book2.ItemSave(), // 爬取到的信息，持久化
 	}
 
 	e.Run(req)

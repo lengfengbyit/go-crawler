@@ -1,4 +1,4 @@
-package parse
+package book
 
 import (
 	"project/crawl/scheduler"
@@ -16,7 +16,7 @@ func GetTags(content []byte) scheduler.ParseResult {
 	for _, m := range match {
 		results.Items = append(results.Items, m[2])
 		results.Requests = append(results.Requests, scheduler.Request{
-			Url: string(m[1]),
+			Url:       string(m[1]),
 			ParseFunc: GetBookList,
 		})
 	}

@@ -1,9 +1,9 @@
-package parse
+package book
 
 import (
 	"bytes"
 	"github.com/antchfx/htmlquery"
-	"project/crawl/model"
+	book2 "project/crawl/model/douban/book"
 	"project/crawl/scheduler"
 	"project/crawl/util"
 	"regexp"
@@ -52,7 +52,7 @@ func GetBookDetail(content []byte) scheduler.ParseResult {
 		id = 0
 	}
 
-	book := model.Book{
+	book := book2.Book{
 		Id:            uint32(id),
 		Name:          htmlquery.InnerText(nameNode),
 		Author:        author,
